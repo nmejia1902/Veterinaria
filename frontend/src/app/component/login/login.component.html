@@ -1,35 +1,63 @@
 <div class="login-container">
   <h2>Iniciar Sesión</h2>
-
-  <form (ngSubmit)="login()">
-    <div class="form-group">
-      <label for="correo">Correo</label>
+  <form (ngSubmit)="login()" #loginForm="ngForm" novalidate>
+    <div class="mb-3">
+      <label for="correo" class="form-label">Correo electronico:</label>
       <input
-        type="email"
+        type="text"
+        class="form-control"
         id="correo"
         [(ngModel)]="correo"
         name="correo"
+        #correoInput="ngModel"
         required
+        [class.is-invalid]="
+          correoInput.invalid &&
+          (correoInput.dirty || correoInput.touched || loginForm.submitted)
+        "
       />
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          correoInput.invalid &&
+          (correoInput.dirty || correoInput.touched || loginForm.submitted)
+        "
+      >
+        <div *ngIf="correoInput.errors?.['required']">
+          El correo es obligatorio
+        </div>
+      </div>
     </div>
-
-    <div class="form-group">
-      <label for="password">Contraseña</label>
+    <div class="mb-3">
+      <label for="password" class="form-label">Contraseña:</label>
       <input
         type="password"
+        class="form-control"
         id="password"
         [(ngModel)]="contrasenia"
         name="password"
+        #passwordInput="ngModel"
         required
+        [class.is-invalid]="
+          passwordInput.invalid &&
+          (passwordInput.dirty || passwordInput.touched || loginForm.submitted)
+        "
       />
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          passwordInput.invalid &&
+          (passwordInput.dirty || passwordInput.touched || loginForm.submitted)
+        "
+      >
+        <div *ngIf="passwordInput.errors?.['required']">
+          La contraseña es obligatoria
+        </div>
+      </div>
     </div>
-
-    <button type="submit" [disabled]="loading">
-      {{ loading ? 'Ingresando...' : 'Entrar' }}
-    </button>
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+      {{ errorMessage }}
+    </div>
+    <button type="submit">Entrar</button>
   </form>
-
-  <div *ngIf="error" class="error-message">
-    {{ error }}
-  </div>
 </div>
