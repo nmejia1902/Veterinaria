@@ -1,0 +1,5 @@
+@if (isLoggedIn$ | async) {
+  <app-home></app-home>
+} @else {
+  <router-outlet></router-outlet>
+}

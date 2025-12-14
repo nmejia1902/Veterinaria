@@ -1,0 +1,81 @@
+<h2>Registrar Venta</h2>
+
+<div class="card p-3">
+
+  <!-- CLIENTE -->
+  <div class="row mb-3">
+    <div class="col">
+      <label>Nombre del Cliente</label>
+      <input class="form-control" [(ngModel)]="clienteNombre">
+    </div>
+
+    <div class="col">
+      <label>Teléfono</label>
+      <input class="form-control" [(ngModel)]="clienteTelefono">
+    </div>
+  </div>
+
+  <!-- PRODUCTOS -->
+  <div class="mb-2" *ngFor="let item of items; let i = index">
+    <div class="row align-items-end">
+
+      <div class="col-5">
+        <label>Producto</label>
+        <select class="form-control" [(ngModel)]="item.productId">
+          <option [ngValue]="null">Seleccione</option>
+          <option *ngFor="let p of productos" [ngValue]="p.id">
+            {{ p.nombre }} (stock: {{ p.stock }})
+          </option>
+        </select>
+      </div>
+
+      <div class="col-2">
+        <label>Cantidad</label>
+        <input type="number" class="form-control" [(ngModel)]="item.quantity">
+      </div>
+
+      <div class="col-3">
+        <label>Subtotal</label>
+        <input class="form-control" [value]="subtotal(item) | number:'1.2-2'" disabled>
+      </div>
+
+      <div class="col-2">
+        <button class="btn btn-danger" (click)="quitarItem(i)">X</button>
+      </div>
+
+    </div>
+  </div>
+
+  <button class="btn btn-outline-primary mt-2" (click)="agregarItem()">
+    + Agregar línea
+  </button>
+
+  <!-- MENSAJES -->
+  <div *ngIf="mensajeError" class="text-danger mt-2">
+    {{ mensajeError }}
+  </div>
+
+  <div *ngIf="mensajeOk" class="text-success mt-2">
+    {{ mensajeOk }}
+  </div>
+
+  <!-- TOTAL -->
+  <div class="mt-3 fw-bold">
+    Total: LPS {{ total() | number:'1.2-2' }}
+  </div>
+
+  <!-- ACCIONES -->
+  <div class="mt-3">
+    <button class="btn btn-primary" (click)="registrar()">
+      Registrar Venta
+    </button>
+  </div>
+
+  <!-- 🧾 FACTURA -->
+  <div *ngIf="ventaId" class="mt-3">
+    <button class="btn btn-success" (click)="verFactura()">
+      📄 Ver Factura
+    </button>
+  </div>
+
+</div>
