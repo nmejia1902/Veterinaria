@@ -19,7 +19,7 @@
   <div class="mb-2" *ngFor="let item of items; let i = index">
     <div class="row align-items-end">
 
-      <div class="col-5">
+      <div class="col-4">
         <label>Producto</label>
         <select class="form-control" [(ngModel)]="item.productId">
           <option [ngValue]="null">Seleccione</option>
@@ -31,10 +31,15 @@
 
       <div class="col-2">
         <label>Cantidad</label>
-        <input type="number" class="form-control" [(ngModel)]="item.quantity">
+        <input type="number" class="form-control" [(ngModel)]="item.quantity" (change)="mostrarStockDisponible(item)">
       </div>
 
-      <div class="col-3">
+      <div class="col-2">
+        <label>Stock Restante</label>
+        <input type="number" class="form-control" [(ngModel)]="item.stock">
+      </div>
+
+      <div class="col-2">
         <label>Subtotal</label>
         <input class="form-control" [value]="subtotal(item) | number:'1.2-2'" disabled>
       </div>

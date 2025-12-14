@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 interface VentaItem {
   productId: number | null;
   quantity: number;
+  stock?: number;
 }
 
 @Component({
@@ -83,6 +84,23 @@ export class VentaComponent implements OnInit, OnDestroy {
 
   total(): number {
     return this.items.reduce((sum, it) => sum + this.subtotal(it), 0);
+  }
+
+  mostrarStockDisponible(item: VentaItem) {
+    this.mensajeError = '';
+    const product = this.productos.find((p) => p.id === item.productId);
+    if(product == null){
+      this.mensajeError = 'Ocurrio un error al obtener el producto.';
+      return;
+    }
+    if(item.quantity > product.stock){
+      this.mensajeError = 'La cantidad solicitada excede el stock disponible.';
+      item.quantity = product.stock;
+      item.stock = 0;
+      return;
+    }
+    item.stock = product.stock - item.quantity;
+    return;
   }
 
   registrar(): void {
